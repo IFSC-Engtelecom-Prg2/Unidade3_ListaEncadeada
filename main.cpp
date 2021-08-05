@@ -7,7 +7,7 @@ int main() {
     Lista l1 = cria_lista();
 
     anexa(l1, "algo");
-    anexa(l1, "coisa");
+    insere(l1, "coisa");
 
     return 0;
 }

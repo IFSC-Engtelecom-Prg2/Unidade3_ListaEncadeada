@@ -37,7 +37,16 @@ void anexa(Lista &l, const string &dado) {
     l.comprimento++;
 }
 
+// acrescenta dado ao inicio da lista
 void insere(Lista &l, const string &dado) {
+    // cria nodo para armazenar o dado
+    Nodo * nodo = new Nodo;
+    nodo->dado = dado;
+    nodo->proximo = nullptr;
+
+    // agora insere-o no início da lista
+    // ele deve se tornar o primeiro nodo !
+
 
 }
 

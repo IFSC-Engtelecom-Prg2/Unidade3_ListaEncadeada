@@ -3,4 +3,4 @@ project(CLionProjectsLista_20211)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(CLionProjectsLista_20211 main.cpp)
+add_executable(CLionProjectsLista_20211 main.cpp lista.cpp)

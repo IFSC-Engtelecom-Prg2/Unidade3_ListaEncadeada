@@ -7,7 +7,7 @@
 
 #include <string>
 
-using std:string;
+using std::string;
 
 // um nodo (a caixinha)
 struct Nodo {
