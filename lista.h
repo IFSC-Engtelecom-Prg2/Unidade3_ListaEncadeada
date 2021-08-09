@@ -41,12 +41,21 @@ void insere(Lista & l, const string & dado);
 void insere(Lista & l, int posicao, const string & dado);
 
 // acessa um dado no início da lista
-string acessa_inicio(Lista & l);
+string & acessa_inicio(Lista & l);
 
 // acessa um dado no final da lista
-string acessa_final(Lista & l);
+string & acessa_final(Lista & l);
 
 // acessa um dado em posição qualquer da lista
-string acessa(Lista & l, int posicao);
+string & acessa(Lista & l, int posicao);
+
+// remove o dado do início da lista
+void remove_inicio(Lista & l);
+
+// remove o dado do final da lista
+void remove_final(Lista & l);
+
+// remove o dado de uma posição qualquer
+void remove(Lista & l, int pos);
 
 #endif //CLIONPROJECTSLISTA_20211_LISTA_H
