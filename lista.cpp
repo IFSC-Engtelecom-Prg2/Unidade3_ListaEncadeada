@@ -9,12 +9,18 @@ Nodo * cria_nodo(const string & dado) {
     Nodo * p_nodo = new Nodo;
     p_nodo->dado = dado;
     p_nodo->proximo = nullptr; // não há nodo após este nodo
+    p_nodo->anterior = nullptr; // não há nodo após este nodo
 
     return p_nodo;
 }
 
 Lista cria_lista() {
-    Lista l = {nullptr, 0};
+    Lista l;
+
+    l.comprimento = 0;
+    // lista vazia: guarda aponta si próprio
+    l.guarda.proximo = &l.guarda;
+    l.guarda.anterior = &l.guarda;
 
     return l;
 }
@@ -23,24 +29,17 @@ void anexa(Lista &l, const string &dado) {
     // primeiro criar um nodo, onde será guardado o dado
     Nodo * p_nodo = cria_nodo(dado);
 
-    // se lista estiver vazia, é mais simples !
-    if (l.comprimento == 0) {
-        l.primeiro = p_nodo;
-    } else {
-        // mas e se lista não estiver vazia ????
-        // precisa acessar o último nodo da lista,
-        // e fazê-lo apontar o novo nodo
-        Nodo * ptr = l.primeiro;
+    // 1 e 2) encaixar o novo nodo na lista ...
+    p_nodo->proximo = &l.guarda;
+    p_nodo->anterior = l.guarda.anterior;
 
-        // enquanto não for o último nodo ...
-        while (ptr->proximo != nullptr) {
-            // aponta o próximo nodo
-            ptr = ptr->proximo;
-        }
+    // 3) torná-lo sucessor do último nodo (atual) da lista
+    Nodo * ultimo = l.guarda.anterior;
+    ultimo->proximo = p_nodo;
 
-        // novo nodo é agora o último nodo !
-        ptr->proximo = p_nodo;
-    }
+    // 4) torná-lo antecessor do nodo guarda
+    l.guarda.anterior = p_nodo;
+
     l.comprimento++;
 }
 
@@ -49,15 +48,18 @@ void insere(Lista &l, const string &dado) {
     // cria nodo para armazenar o dado
     Nodo * p_nodo = cria_nodo(dado);
 
-    // agora insere-o no início da lista
-    // ele deve se tornar o primeiro nodo !
+    // encaixar o novo nodo na lista
+    // 1) definir o sucessor do novo nodo, que deve ser o
+    // primeiro nodo atual da lista
+    p_nodo->proximo = l.guarda.proximo;
+    p_nodo->anterior = &l.guarda;
 
-    // passo 1) copiar o ponteiro "primeiro" para o ponteiro "proximo"
-    // do novo nodo
-    p_nodo->proximo = l.primeiro;
+    // 3) torná-lo antecessor do primeiro nodo atual da lista
+    Nodo * ptr = l.guarda.proximo; // este é o 1o nodo atual
+    ptr->anterior = p_nodo;
 
-    // passo 2) copiar o ponteiro do novo "nodo" para o ponteiro "primeiro"
-    l.primeiro = p_nodo;
+    // 4) torná-lo o sucessor do guarda
+    l.guarda.proximo = p_nodo;
 
     l.comprimento++;
 }
@@ -69,26 +71,27 @@ void insere(Lista &l, int pos, const string &dado) {
     // cria um novo nodo
     Nodo * p_nodo = cria_nodo(dado);
 
-    if (pos >= l.comprimento) anexa(l, dado);
-    else if (pos == 0) insere(l, dado);
-    else {
-        // precisa localizar o nodo que está na posição "pos-1"
-        Nodo * ptr = l.primeiro;
-        for (int i=0; i < pos-1; i++) {
-            // avança para próximo nodo
+    if (pos >= l.comprimento) {
+        anexa(l, dado);
+    } else {
+        // 1) localizar o nodo que está na posição de inserção
+        Nodo * ptr = l.guarda.proximo;
+        for (; pos > 0; pos--) {
             ptr = ptr->proximo;
         }
 
-        // agora encaixa o novo nodo na frente do nodo apontado por "ptr"
-        // 1) novo nodo deve apontar o nodo que está atualente na posição
+        // 1) o nodo na posição atual deve ser o sucessor do novo nodo
+        p_nodo->proximo = ptr;
+        // 2) antecessor do novo nodo deve ser o antecessor do
+        // nodo da posição atual
+        p_nodo->anterior = ptr->anterior;
+        // 3) antecessor do nodo na posição atual deve ser novo nodo
+        ptr->anterior = p_nodo;
+        // 4) sucessor do nodo antecessor da posição atual deve ser
+        // novo nodo .. quer dizer, novo nodo se torna o nodo
+        // da posição desejada
+        p_nodo->anterior->proximo = p_nodo;
 
-        // indicada por "pos"
-        p_nodo->proximo = ptr->proximo;
-
-        // passo 2) antecessor deve apontar o novo nodo
-        ptr->proximo = p_nodo;
-
-        // atualizar o comprimento da lista
         l.comprimento++;
     }
 }

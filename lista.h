@@ -15,12 +15,13 @@ struct Nodo {
     string dado;
 
     // isto indica qual o próximo nodo da sequência
-    Nodo * proximo;
+    // e tb seu antecessor
+    Nodo * proximo, * anterior;
 };
 
 struct Lista {
     // o primeiro nodo da lista
-    Nodo * primeiro;
+    Nodo guarda;
 
     // o comprimento da lista (quantos nodos existem)
     int comprimento;
