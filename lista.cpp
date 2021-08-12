@@ -5,6 +5,38 @@
 #include "lista.h"
 #include <exception>
 
+// funções privativas da lista: somente para uso interno
+Nodo * localiza_nodo(Lista & l, int pos) {
+    if (pos >= l.comprimento) throw std::exception();
+
+    Nodo * ptr;
+
+    // localiza o nodo na primeira ou na segunda metade da lista
+    if (pos < l.comprimento/2) { // está na 1a metade
+        // precisa localizar o nodo que está na posição "pos"
+        ptr = l.guarda.proximo;
+
+        for (; pos > 0; pos--, ptr = ptr->proximo);
+    } else { // está na 2a metade
+        pos = (l.comprimento - 1) - pos;
+        ptr = l.guarda.anterior;
+
+        for (; pos > 0; pos--, ptr = ptr->anterior);
+    }
+
+    return ptr;
+}
+
+void desconecta_nodo(Lista & l, Nodo * ptr) {
+    // identifica o sucessor e antecessor do nodo a remover
+    Nodo * ant = ptr->anterior;
+    Nodo * succ = ptr->proximo;
+
+    // desconecta o nodo da lista
+    ant->proximo = succ;
+    succ->anterior = ant;
+}
+
 Nodo * cria_nodo(const string & dado) {
     Nodo * p_nodo = new Nodo;
     p_nodo->dado = dado;
@@ -101,7 +133,7 @@ void insere(Lista &l, int pos, const string &dado) {
 string & acessa_inicio(Lista &l) {
     if (l.comprimento == 0) throw std::exception();
 
-    Nodo * ptr = l.primeiro;
+    Nodo * ptr = l.guarda.proximo;
     return ptr->dado;
 }
 
@@ -112,24 +144,13 @@ string & acessa_final(Lista &l) {
 
     // localizar o último nodo, e então
     // retornar o dado lá contido
-    Nodo * ptr = l.primeiro;
-
-    for (; ptr->proximo != nullptr; ptr = ptr->proximo);
+    Nodo * ptr = l.guarda.anterior;
 
     return ptr->dado;
 }
 
 string & acessa(Lista &l, int pos) {
-    if (l.comprimento == 0) throw std::exception();
-
-    // precisa localizar o nodo que está na posição "pos"
-    Nodo * ptr = l.primeiro;
-//    for (int i=0; i < pos; i++) {
-//        // avança para próximo nodo
-//        ptr = ptr->proximo;
-//    }
-
-    for (; pos > 0; pos--, ptr=ptr->proximo);
+    Nodo * ptr = localiza_nodo(l, pos);
 
     // retorna o dado contido nesse nodo
     return ptr->dado;
@@ -138,22 +159,39 @@ string & acessa(Lista &l, int pos) {
 void remove_inicio(Lista &l) {
     if (l.comprimento == 0) throw std::exception();
 
-    // 1) desconectar o primeiro nodo da lista
-    Nodo * ptr = l.primeiro;
-    l.primeiro = ptr->proximo;
+    // este é o nodo a ser removido
+    Nodo * ptr = l.guarda.proximo;
 
-    // 2) liberar a área de memória alocada para o primeiro nodo
+    desconecta_nodo(l, ptr);
+
+    // 3) destruir o nodo removido
     delete ptr;
 
-    // 3) decrementar o comprimento da lista
     l.comprimento--;
 }
 
 void remove_final(Lista &l) {
+    if (l.comprimento == 0) throw std::exception();
 
+    // este é o nodo a ser removido
+    Nodo * ptr = l.guarda.anterior;
+
+    desconecta_nodo(l, ptr);
+
+    // destroi o nodo removido
+    delete ptr;
+
+    l.comprimento--;
 }
 
 void remove(Lista &l, int pos) {
+    Nodo * ptr = localiza_nodo(l, pos);
 
+    desconecta_nodo(l, ptr);
+
+    // destroi o nodo
+    delete ptr;
+
+    l.comprimento--;
 }
 

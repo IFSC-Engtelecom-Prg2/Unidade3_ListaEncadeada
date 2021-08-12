@@ -37,7 +37,7 @@ int main() {
         cout << "posição " << i << ": " << acessa(l1, i) << endl;
     }
 
-    remove_inicio(l1);
+    remove(l1, 0);
     cout << endl;
     for (int i=0; i < l1.comprimento; i++) {
         cout << "posição " << i << ": " << acessa(l1, i) << endl;
