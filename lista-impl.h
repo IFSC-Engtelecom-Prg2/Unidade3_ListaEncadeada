@@ -65,8 +65,8 @@ void conecta_nodo(Nodo * novo, Nodo * ptr) {
 }
 
 // funções públicas
-Lista cria_lista() {
-    Lista l;
+template <typename T> Lista<T> cria_lista() {
+    Lista<T> l;
 
     l.comprimento = 0;
     // lista vazia: guarda aponta si próprio
@@ -76,9 +76,9 @@ Lista cria_lista() {
     return l;
 }
 
-void anexa(Lista &l, const string &dado) {
+template <typename T> void anexa(Lista<T> &l, const T &dado) {
     // primeiro criar um nodo, onde será guardado o dado
-    Nodo * p_nodo = cria_nodo(dado);
+    Nodo<T> * p_nodo = cria_nodo(dado);
 
     conecta_nodo(p_nodo, &l.guarda);
 
@@ -116,11 +116,11 @@ void insere(Lista &l, int pos, const string &dado) {
 
 // retorna o primeiro dado da lista
 // se lista estiver vazia, dispara uma exceção !
-string & acessa_inicio(Lista &l) {
+template <typename T> T & acessa_inicio(Lista<T> &l) {
     if (l.comprimento == 0) throw std::exception();
 
-    Nodo * ptr = l.guarda.proximo;
-    return ptr->dado;
+    Nodo<T> * ptr = l.guarda.proximo;
+    return  ptr->dado;
 }
 
 // retorna o último dado da lista

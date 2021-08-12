@@ -10,18 +10,18 @@
 using std::string;
 
 // um nodo (a caixinha)
-struct Nodo {
+template <typename T> struct Nodo {
     // um dado armazenado
-    string dado;
+    T dado;
 
     // isto indica qual o próximo nodo da sequência
     // e tb seu antecessor
     Nodo * proximo, * anterior;
 };
 
-struct Lista {
+template <typename T> struct Lista {
     // o primeiro nodo da lista
-    Nodo guarda;
+    Nodo<T> guarda;
 
     // o comprimento da lista (quantos nodos existem)
     int comprimento;
@@ -30,10 +30,10 @@ struct Lista {
 // operações da lista: cada operação é uma função
 
 // cria uma lista inicialmente vazia
-Lista cria_lista();
+template <typename T> Lista<T> cria_lista();
 
 // acrescenta um dado ao final da lista
-void anexa(Lista & l, const string & dado);
+template <typename T> void anexa(Lista<T> & l, const T & dado);
 
 // insere um dado no início da lista
 void insere(Lista & l, const string & dado);
@@ -42,7 +42,7 @@ void insere(Lista & l, const string & dado);
 void insere(Lista & l, int posicao, const string & dado);
 
 // acessa um dado no início da lista
-string & acessa_inicio(Lista & l);
+template <typename T> T & acessa_inicio(Lista<T> & l);
 
 // acessa um dado no final da lista
 string & acessa_final(Lista & l);
@@ -58,5 +58,7 @@ void remove_final(Lista & l);
 
 // remove o dado de uma posição qualquer
 void remove(Lista & l, int pos);
+
+#include <lista-impl.h>
 
 #endif //CLIONPROJECTSLISTA_20211_LISTA_H

@@ -4,7 +4,8 @@
 using namespace std;
 
 int main() {
-    Lista l1 = cria_lista();
+    Lista<string> l1 = cria_lista<string>();
+    Lista<double> l2 = cria_lista<double>();
 
     cout << "Comprimento: " << l1.comprimento << endl;
     try {
