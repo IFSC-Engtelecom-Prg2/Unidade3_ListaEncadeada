@@ -37,6 +37,7 @@ void desconecta_nodo(Lista & l, Nodo * ptr) {
     succ->anterior = ant;
 }
 
+// cria e inicializa um nodo
 Nodo * cria_nodo(const string & dado) {
     Nodo * p_nodo = new Nodo;
     p_nodo->dado = dado;
@@ -46,6 +47,24 @@ Nodo * cria_nodo(const string & dado) {
     return p_nodo;
 }
 
+// novo: o novo nodo
+// ptr: nodo que faz parte da lista
+// novo se tornará antecessor de ptr
+void conecta_nodo(Nodo * novo, Nodo * ptr) {
+    // 1) o nodo na posição atual deve ser o sucessor do novo nodo
+    novo->proximo = ptr;
+    // 2) antecessor do novo nodo deve ser o antecessor do
+    // nodo da posição atual
+    novo->anterior = ptr->anterior;
+    // 3) antecessor do nodo na posição atual deve ser novo nodo
+    ptr->anterior = novo;
+    // 4) sucessor do nodo antecessor da posição atual deve ser
+    // novo nodo .. quer dizer, novo nodo se torna o nodo
+    // da posição desejada
+    novo->anterior->proximo = novo;
+}
+
+// funções públicas
 Lista cria_lista() {
     Lista l;
 
@@ -61,16 +80,7 @@ void anexa(Lista &l, const string &dado) {
     // primeiro criar um nodo, onde será guardado o dado
     Nodo * p_nodo = cria_nodo(dado);
 
-    // 1 e 2) encaixar o novo nodo na lista ...
-    p_nodo->proximo = &l.guarda;
-    p_nodo->anterior = l.guarda.anterior;
-
-    // 3) torná-lo sucessor do último nodo (atual) da lista
-    Nodo * ultimo = l.guarda.anterior;
-    ultimo->proximo = p_nodo;
-
-    // 4) torná-lo antecessor do nodo guarda
-    l.guarda.anterior = p_nodo;
+    conecta_nodo(p_nodo, &l.guarda);
 
     l.comprimento++;
 }
@@ -80,18 +90,7 @@ void insere(Lista &l, const string &dado) {
     // cria nodo para armazenar o dado
     Nodo * p_nodo = cria_nodo(dado);
 
-    // encaixar o novo nodo na lista
-    // 1) definir o sucessor do novo nodo, que deve ser o
-    // primeiro nodo atual da lista
-    p_nodo->proximo = l.guarda.proximo;
-    p_nodo->anterior = &l.guarda;
-
-    // 3) torná-lo antecessor do primeiro nodo atual da lista
-    Nodo * ptr = l.guarda.proximo; // este é o 1o nodo atual
-    ptr->anterior = p_nodo;
-
-    // 4) torná-lo o sucessor do guarda
-    l.guarda.proximo = p_nodo;
+    conecta_nodo(p_nodo, l.guarda.proximo);
 
     l.comprimento++;
 }
@@ -107,22 +106,9 @@ void insere(Lista &l, int pos, const string &dado) {
         anexa(l, dado);
     } else {
         // 1) localizar o nodo que está na posição de inserção
-        Nodo * ptr = l.guarda.proximo;
-        for (; pos > 0; pos--) {
-            ptr = ptr->proximo;
-        }
+        Nodo * ptr = localiza_nodo(l, pos);
 
-        // 1) o nodo na posição atual deve ser o sucessor do novo nodo
-        p_nodo->proximo = ptr;
-        // 2) antecessor do novo nodo deve ser o antecessor do
-        // nodo da posição atual
-        p_nodo->anterior = ptr->anterior;
-        // 3) antecessor do nodo na posição atual deve ser novo nodo
-        ptr->anterior = p_nodo;
-        // 4) sucessor do nodo antecessor da posição atual deve ser
-        // novo nodo .. quer dizer, novo nodo se torna o nodo
-        // da posição desejada
-        p_nodo->anterior->proximo = p_nodo;
+        conecta_nodo(p_nodo, ptr);
 
         l.comprimento++;
     }
