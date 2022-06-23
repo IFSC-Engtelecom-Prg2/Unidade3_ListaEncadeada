@@ -6,8 +6,7 @@ using namespace std;
 int main() {
     Lista l1 = cria_lista();
 
-    anexa(l1, "algo");
-    anexa(l1, "coisa");
+    cout << "Criou uma lista" << endl;
 
     return 0;
 }
