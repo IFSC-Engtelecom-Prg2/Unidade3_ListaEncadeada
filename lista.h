@@ -5,48 +5,66 @@
 #ifndef CLIONPROJECTSLISTA_20211_LISTA_H
 #define CLIONPROJECTSLISTA_20211_LISTA_H
 
-#include <string>
-
-using std::string;
-
-// um nodo (a caixinha)
-struct Nodo {
-    // um dado armazenado
-    string dado;
-
-    // isto indica qual o próximo nodo da sequência
-    Nodo * proximo;
-};
+#ifndef LISTA_LISTA_H
+#define LISTA_LISTA_H
 
 struct Lista {
-    // o primeiro nodo da lista
-    Nodo * primeiro;
+    // a área de memória ???
 
-    // o comprimento da lista (quantos nodos existem)
-    int comprimento;
+
+    // a quantidade de dados armazenados
+    int n;
+
+    // ??? ainda não sei o que vai aqui dentro ...
 };
 
-// operações da lista: cada operação é uma função
+// As operações da lista
 
 // cria uma lista inicialmente vazia
-Lista cria_lista();
+Lista lista_cria();
 
-// acrescenta um dado ao final da lista
-void anexa(Lista & l, const string & dado);
+// destroi uma lista
+void lista_destroi(Lista & l);
 
-// insere um dado no início da lista
-void insere(Lista & l, const string & dado);
+// Acessa o dado da frente da lista
+// se lista vazia: o que acontece ????
+// DISPARA EXCEÇÃO do tipo invalid_argument
+int lista_frente(const Lista & l);
 
-// insere um dado em uma posição qualquer
-void insere(Lista & l, int posicao, const string & dado);
+// Acessa o dado do final da lista
+// se lista vazia: o que acontece ????
+// DISPARA EXCEÇÃO do tipo invalid_argument
+int lista_atras(const Lista & l);
 
-// acessa um dado no início da lista
-string acessa_inicio(Lista & l);
+// esvazia uma lista
+void lista_limpa(Lista & l);
 
-// acessa um dado no final da lista
-string acessa_final(Lista & l);
+// remove o dado do início
+// se lista vazia: DISPARA EXCEÇÃO do tipo invalid_argument
+void remove_inicio(Lista & l);
 
-// acessa um dado em posição qualquer da lista
-string acessa(Lista & l, int posicao);
+// remove o dado do fim
+// se lista vazia: DISPARA EXCEÇÃO do tipo invalid_argument
+void remove_fim(Lista & l);
+
+// Anexa um dado à lista
+void lista_anexa(Lista & l, int dado);
+
+// Insere um dado no início da lista
+void lista_insere(Lista & l, int dado);
+
+// Insere um dado numa posição da lista
+// Se posição inálida, dispara exceção invalid_argument
+void lista_insere(Lista & l, int dado, int posicao);
+
+// Retorna o tamanho da lista
+int lista_tamanho(const Lista & l);
+
+// Verifica se lista está vazia
+bool lista_vazia(const Lista & l);
+
+// Acessa um dado de uma posição da lista
+// Se posição inálida, dispara exceção invalid_argument
+int lista_acessa(const Lista & l, int posicao);
 
 #endif //CLIONPROJECTSLISTA_20211_LISTA_H
