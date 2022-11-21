@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.19)
-project(CLionProjectsLista_20211)
+project(lista)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
-add_executable(CLionProjectsLista_20211 main.cpp)
+add_executable(lista main.cpp lista.h lista.cpp)
