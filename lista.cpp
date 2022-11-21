@@ -5,7 +5,8 @@
 #include "lista.h"
 
 Lista cria_lista() {
-    Lista l = {nullptr, 0};
+    // aqui deve-se iniciar a lista para que inicialmente esteja vazia !
+    Lista l;
 
     return l;
 }
